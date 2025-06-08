@@ -200,6 +200,7 @@
         .party-fdp { background: #FFED00; color: #333; }
         .party-linke { background: #BE3075; color: white; }
         .party-afd { background: #009EE0; color: white; }
+        .party-default { background: #6c757d; color: white; }
         
         .loading {
             display: none;
@@ -343,6 +344,15 @@
             padding: 3px 8px;
             border-radius: 5px;
         }
+        
+        .proxy-info {
+            background: #e7f3ff;
+            border-left: 5px solid #1a2a6c;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -353,6 +363,10 @@
         </header>
         
         <div class="content">
+            <div class="proxy-info">
+                <i class="fas fa-info-circle"></i> Diese Seite verwendet einen Proxy-Service, um die Abgeordnetendaten abzurufen.
+            </div>
+            
             <div class="info-box">
                 <h3><i class="fas fa-info-circle"></i> Worum geht es?</h3>
                 <p>Die deutsche Staatsbürgerin <span class="highlight">Yasemin Acar</span> befindet sich an Bord der Gaza-Freedom-Flotilla <span class="highlight">"Madleen"</span>. Israel hat militärische Angriffe auf das zivile Schiff in internationalen Gewässern angedroht. Vor dem Hintergrund früherer Angriffe auf ähnliche Flotillas ist diese Drohung besonders ernst zu nehmen.</p>
@@ -439,133 +453,7 @@ Mit freundlichen Grüßen,
         // Globale Variable für die gefundenen Abgeordneten
         let representatives = [];
         
-        // Simulierte Datenbank mit Abgeordneten
-        const representativesDatabase = {
-            "10117": [
-                { 
-                    id: 1,
-                    name: "Anna Schmidt", 
-                    email: "anna.schmidt@bundestag.de",
-                    party: "SPD",
-                    partyClass: "party-spd",
-                    constituency: "Berlin-Mitte",
-                    img: "https://via.placeholder.com/100?text=AS"
-                },
-                { 
-                    id: 2,
-                    name: "Max Bauer", 
-                    email: "max.bauer@bundestag.de",
-                    party: "CDU",
-                    partyClass: "party-cdu",
-                    constituency: "Berlin-Mitte",
-                    img: "https://via.placeholder.com/100?text=MB"
-                }
-            ],
-            "40213": [
-                { 
-                    id: 3,
-                    name: "Dr. Thomas Müller", 
-                    email: "thomas.mueller@bundestag.de",
-                    party: "CDU",
-                    partyClass: "party-cdu",
-                    constituency: "Düsseldorf-Süd",
-                    img: "https://via.placeholder.com/100?text=TM"
-                }
-            ],
-            "80331": [
-                { 
-                    id: 4,
-                    name: "Lisa Berger", 
-                    email: "lisa.berger@bundestag.de",
-                    party: "Bündnis 90/Die Grünen",
-                    partyClass: "party-gruene",
-                    constituency: "München-Zentrum",
-                    img: "https://via.placeholder.com/100?text=LB"
-                },
-                { 
-                    id: 5,
-                    name: "Markus Weber", 
-                    email: "markus.weber@bundestag.de",
-                    party: "FDP",
-                    partyClass: "party-fdp",
-                    constituency: "München-Zentrum",
-                    img: "https://via.placeholder.com/100?text=MW"
-                }
-            ],
-            "20095": [
-                { 
-                    id: 6,
-                    name: "Max Hofmann", 
-                    email: "max.hofmann@bundestag.de",
-                    party: "FDP",
-                    partyClass: "party-fdp",
-                    constituency: "Hamburg-Mitte",
-                    img: "https://via.placeholder.com/100?text=MH"
-                }
-            ],
-            "50667": [
-                { 
-                    id: 7,
-                    name: "Sarah Klein", 
-                    email: "sarah.klein@bundestag.de",
-                    party: "SPD",
-                    partyClass: "party-spd",
-                    constituency: "Köln-Innenstadt",
-                    img: "https://via.placeholder.com/100?text=SK"
-                },
-                { 
-                    id: 8,
-                    name: "Julia Meier", 
-                    email: "julia.meier@bundestag.de",
-                    party: "Die Linke",
-                    partyClass: "party-linke",
-                    constituency: "Köln-Innenstadt",
-                    img: "https://via.placeholder.com/100?text=JM"
-                }
-            ],
-            "70173": [
-                { 
-                    id: 9,
-                    name: "Hans Fischer", 
-                    email: "hans.fischer@bundestag.de",
-                    party: "CDU",
-                    partyClass: "party-cdu",
-                    constituency: "Stuttgart-Mitte",
-                    img: "https://via.placeholder.com/100?text=HF"
-                },
-                { 
-                    id: 10,
-                    name: "Sabine Vogel", 
-                    email: "sabine.vogel@bundestag.de",
-                    party: "Bündnis 90/Die Grünen",
-                    partyClass: "party-gruene",
-                    constituency: "Stuttgart-Mitte",
-                    img: "https://via.placeholder.com/100?text=SV"
-                }
-            ],
-            "60311": [
-                { 
-                    id: 11,
-                    name: "Robert Lang", 
-                    email: "robert.lang@bundestag.de",
-                    party: "SPD",
-                    partyClass: "party-spd",
-                    constituency: "Frankfurt am Main I",
-                    img: "https://via.placeholder.com/100?text=RL"
-                },
-                { 
-                    id: 12,
-                    name: "Claudia Schulz", 
-                    email: "claudia.schulz@bundestag.de",
-                    party: "AfD",
-                    partyClass: "party-afd",
-                    constituency: "Frankfurt am Main I",
-                    img: "https://via.placeholder.com/100?text=CS"
-                }
-            ]
-        };
-        
-        // Funktion zum Suchen der Abgeordneten per PLZ
+        // Funktion zum Suchen der Abgeordneten per PLZ mit Proxy
         async function findRepresentative() {
             const plz = document.getElementById('plz').value;
             
@@ -581,23 +469,59 @@ Mit freundlichen Grüßen,
             document.getElementById('result-section').style.display = 'none';
             
             try {
-                // Simuliere Netzwerklatenz
-                await new Promise(resolve => setTimeout(resolve, 1200));
+                // Proxy-Service zur Umgehung von CORS-Beschränkungen
+                const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                const apiUrl = `https://www.abgeordnetenwatch.de/api/v2/constituencies?zipcode=${plz}&parliament=5`;
                 
-                // Abgeordnete aus der Datenbank holen
-                representatives = representativesDatabase[plz] || [];
+                const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
+                const data = await response.json();
                 
-                if (representatives.length === 0) {
-                    showError("Für Ihre PLZ wurde kein Abgeordneter gefunden. Bitte versuchen Sie eine benachbarte PLZ");
+                if (!data.data || data.data.length === 0) {
+                    showError("Für Ihre PLZ wurde kein Wahlkreis gefunden. Bitte versuchen Sie eine benachbarte PLZ.");
                     return;
                 }
+                
+                // Wahlkreis-ID extrahieren
+                const constituencyId = data.data[0].id;
+                
+                // Abgeordnete für den Wahlkreis abrufen
+                const membersApiUrl = `https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates?constituency=${constituencyId}&mandate_type=1&parliament=5&is_active=true`;
+                const membersResponse = await fetch(proxyUrl + encodeURIComponent(membersApiUrl));
+                const membersData = await membersResponse.json();
+                
+                if (!membersData.data || membersData.data.length === 0) {
+                    showError("Für Ihren Wahlkreis wurden keine aktiven Abgeordneten gefunden.");
+                    return;
+                }
+                
+                // Abgeordnete aufbereiten
+                representatives = membersData.data.map(member => {
+                    // Parteifarbe ermitteln
+                    let partyClass = 'party-default';
+                    if (member.politician.party === 'CDU') partyClass = 'party-cdu';
+                    if (member.politician.party === 'SPD') partyClass = 'party-spd';
+                    if (member.politician.party === 'Bündnis 90/Die Grünen') partyClass = 'party-gruene';
+                    if (member.politician.party === 'FDP') partyClass = 'party-fdp';
+                    if (member.politician.party === 'Die Linke') partyClass = 'party-linke';
+                    if (member.politician.party === 'AfD') partyClass = 'party-afd';
+                    
+                    return {
+                        id: member.id,
+                        name: member.politician.label,
+                        email: member.politician.contact.email,
+                        party: member.politician.party,
+                        partyClass: partyClass,
+                        constituency: data.data[0].name,
+                        img: member.politician.photo || `https://via.placeholder.com/100?text=${member.politician.label.substring(0,2)}`
+                    };
+                });
                 
                 // Ergebnisse anzeigen
                 showRepresentatives();
                 
             } catch (error) {
                 showError("Es gab ein Problem bei der Suche nach Abgeordneten. Bitte versuchen Sie es später erneut.");
-                console.error("Fehler:", error);
+                console.error("API Fehler:", error);
             } finally {
                 document.getElementById('loading').style.display = 'none';
             }
@@ -607,6 +531,11 @@ Mit freundlichen Grüßen,
         function showRepresentatives() {
             const container = document.getElementById('representative-container');
             container.innerHTML = '';
+            
+            if (representatives.length === 0) {
+                container.innerHTML = '<p>Keine Abgeordneten gefunden</p>';
+                return;
+            }
             
             representatives.forEach(rep => {
                 const card = document.createElement('div');
@@ -620,7 +549,7 @@ Mit freundlichen Grüßen,
                         </div>
                     </div>
                     <p><strong>Wahlkreis:</strong> ${rep.constituency}</p>
-                    <p><strong>E-Mail:</strong> ${rep.email}</p>
+                    <p><strong>E-Mail:</strong> ${rep.email || 'Keine E-Mail verfügbar'}</p>
                 `;
                 container.appendChild(card);
             });
