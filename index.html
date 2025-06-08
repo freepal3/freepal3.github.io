@@ -1,18 +1,126 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>Hank Quinlan, Horrible Cop</title>
-	</head>
-	<body>
-		<nav>
-    		<ul>
-        		<li><a href="/">Home</a></li>
-	        	<li><a href="/about">About</a></li>
-        		<li><a href="/cv">CV</a></li>
-        		<li><a href="/blog">Blog</a></li>
-    		</ul>
-		</nav>
-		<div class="container">
-    		<div class="blurb">
-        		<h1>Hi there, I'm Hank Quinlan!</h1>
-				<p>I'm best known as the horrible cop from <em>A Touch of Evil</em> Don't trust me. <a href="/about">Read more about m
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Mail Aktion: Gaza-Freedom-Flotilla</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .email-template {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
+        .input-group {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            padding: 10px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .note {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>E-Mail Aktion: Gaza-Freedom-Flotilla</h1>
+    
+    <div class="email-template">
+Sehr geehrte Abgeordnete des Auswärtigen Amts/des Auswärtigen Ausschusses,
+
+derzeit befindet sich die deutsche Staatsbürgerin Yasemin Acar an Bord der Gaza-Freedom-Flotilla „Madleen".
+Gemeinsam mit anderen Aktivist:innen versucht sie, Israels völkerrechtswidrige Blockade des Gazastreifens zu durchbrechen, um Lebensmittel und medizinische Vorräte nach Gaza zu bringen. Israels Verteidigungsminister kündigt offen den Einsatz der israelischen Armee gegen dieses Vorhaben an und droht einem zivilen Schiff in internationalen Gewässern mit militärischen Angriffen.
+
+Diese Drohungen sind besonders ernst zu nehmen vor dem Hintergrund des israelischen Angriffs auf die Gaza-Flotilla im Mai 2010, bei dem Israel neun Aktivist:innen tötete und Dutzende verwundete, sowie aufgrund der Drohnenangriffe auf die Gaza-Flotilla „Conscience" vor etwa einem Monat.
+
+Ich fordere Sie daher auf, alle zur Verfügung stehenden Mittel zu nutzen, um die Sicherheit der Aktivist:innen auf der „Madleen" zu gewährleisten.
+    </div>
+
+    <div class="input-group">
+        <label for="plz">Ihre Postleitzahl:</label>
+        <input type="text" id="plz" placeholder="5-stellige PLZ" maxlength="5">
+        <p class="note">Bitte geben Sie Ihre Postleitzahl ein, um den zuständigen Abgeordneten zu finden</p>
+    </div>
+
+    <button onclick="sendEmail()">Jetzt E-Mail an Abgeordneten schicken</button>
+
+    <script>
+        // Datenbank mit Beispiel-PLZ und Abgeordneten
+        const representatives = {
+            "10117": "anna.schmidt@bundestag.de",
+            "40213": "tom.mueller@bundestag.de",
+            "80331": "lisa.berger@bundestag.de",
+            "20095": "max.hofmann@bundestag.de",
+            "50667": "sarah.klein@bundestag.de"
+        };
+
+        function sendEmail() {
+            const plz = document.getElementById('plz').value;
+            
+            // PLZ-Validierung
+            if (!/^\d{5}$/.test(plz)) {
+                alert("Bitte geben Sie eine gültige 5-stellige Postleitzahl ein");
+                return;
+            }
+            
+            // Abgeordneten finden
+            const email = representatives[plz];
+            
+            if (!email) {
+                alert("Für Ihre PLZ wurde kein Abgeordneter gefunden. Bitte versuchen Sie eine benachbarte PLZ");
+                return;
+            }
+            
+            // E-Mail-Inhalt
+            const subject = "Dringender Appell: Sicherheit der Aktivist:innen auf der Madleen gewährleisten";
+            const body = `Sehr geehrte Abgeordnete des Auswärtigen Amts/des Auswärtigen Ausschusses,
+
+derzeit befindet sich die deutsche Staatsbürgerin Yasemin Acar an Bord der Gaza-Freedom-Flotilla „Madleen".
+Gemeinsam mit anderen Aktivist:innen versucht sie, Israels völkerrechtswidrige Blockade des Gazastreifens zu durchbrechen, um Lebensmittel und medizinische Vorräte nach Gaza zu bringen. Israels Verteidigungsminister kündigt offen den Einsatz der israelischen Armee gegen dieses Vorhaben an und droht einem zivilen Schiff in internationalen Gewässern mit militärischen Angriffen.
+
+Diese Drohungen sind besonders ernst zu nehmen vor dem Hintergrund des israelischen Angriffs auf die Gaza-Flotilla im Mai 2010, bei dem Israel neun Aktivist:innen tötete und Dutzende verwundete, sowie aufgrund der Drohnenangriffe auf die Gaza-Flotilla „Conscience" vor etwa einem Monat.
+
+Ich fordere Sie daher auf, alle zur Verfügung stehenden Mittel zu nutzen, um die Sicherheit der Aktivist:innen auf der „Madleen" zu gewährleisten.
+
+Mit freundlichen Grüßen,
+[Ihr Name]`;
+
+            // Mailto-Link erstellen
+            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            
+            // Mail-Client öffnen
+            window.location.href = mailtoLink;
+        }
+    </script>
+</body>
+</html>
